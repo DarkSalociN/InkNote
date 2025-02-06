@@ -16,13 +16,14 @@ public class InkNoteController {
     @Autowired
     private TattooRepository repository;
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping
     public void saveTattoo(@RequestBody TattooRequestDTO data){
         Tattoo tattooData = new Tattoo(data);
         repository.save(tattooData);
 
     }
-
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping
     public List<TattooResponseDTO> getAll(){
 
