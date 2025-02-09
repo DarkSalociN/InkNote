@@ -1,9 +1,7 @@
 package com.example.inknote.controller;
 
-import com.example.inknote.tattoo.Tattoo;
-import com.example.inknote.tattoo.TattooRepository;
-import com.example.inknote.tattoo.TattooRequestDTO;
-import com.example.inknote.tattoo.TattooResponseDTO;
+import com.example.inknote.tattoo.*;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +13,8 @@ public class InkNoteController {
 
     @Autowired
     private TattooRepository repository;
+
+    private final TattooService service = new TattooService();
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping
@@ -28,5 +28,26 @@ public class InkNoteController {
     public List<TattooResponseDTO> getAll(){
 
         return repository.findAll().stream().map(TattooResponseDTO::new).toList();
+    }
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @PutMapping
+    @Transactional
+    public void updateTattoo(@RequestBody TattooUpdateDTO data){
+        Tattoo tattooData = repository.getReferenceById(data.id());
+        if (tattooData == null) {
+            System.out.println("sem objeto no banco de dados");
+            return;
+        }
+        Tattoo updateTattoo = service.updateTattoo(tattooData, data);
+        repository.save(updateTattoo);
+    }
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @DeleteMapping("/{id}")
+    public void deleteTattoo(@PathVariable Long id){
+        Tattoo tattooData = repository.getReferenceById(id);
+
+        repository.delete(tattooData);
     }
 }
