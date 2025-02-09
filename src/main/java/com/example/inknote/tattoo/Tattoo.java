@@ -6,7 +6,6 @@ import lombok.*;
 @Getter
 @Table(name = "tattoo")
 @Entity(name = "tattoo")
-@NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 
@@ -28,8 +27,13 @@ public class Tattoo {
     public Tattoo(TattooRequestDTO data) {
         this.image = data.image();
         this.price = data.price();
-        this.title = data.tittle();
+        this.title = data.title();
     }
+
+    public Tattoo(){
+
+    }
+
 
     public Long getId() {
         return id;
@@ -45,5 +49,21 @@ public class Tattoo {
 
     public Integer getPrice() {
         return price;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 }
